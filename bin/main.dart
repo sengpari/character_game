@@ -12,7 +12,7 @@ void main() async {
 
   // 게임 시작
   print('\n⚔️ 게임이 시작됩니다 ⚔️\n');
-  game.startBattle();
+  game.battleStart();
 
   // 결과 저장 여부 확인
   game.saveResult();

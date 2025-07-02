@@ -9,26 +9,29 @@ class Game {
   List<Monster> monsters = [];
 
   //캐릭터 데이터 로드
+  //캐릭터 데이터 로드
   Future<void> loadCharacter(String filePath) async {
     try {
       final file = File(filePath);
       final lines = await file.readAsLines();
 
-      //if (lines.isEmpty) throw FormatException('캐릭터 데이터가 비어 있음');
-
       final stats = lines[0].split(',');
-      //if (stats.length != 3) throw FormatException('캐릭터 데이터 형식 오류');
 
       int hp = int.parse(stats[0]);
       int atk = int.parse(stats[1]);
       int def = int.parse(stats[2]);
 
-      stdout.write('캐릭터 이름을 입력하세요: ');
-      String? input = stdin.readLineSync();
-      if (input == null ||
-          input.trim().isEmpty ||
-          !RegExp(r'^[a-zA-Z가-힣]+$').hasMatch(input)) {
-        throw FormatException('잘못된 이름 형식');
+      String input = '';
+      while (true) {
+        stdout.write('캐릭터 이름을 입력하세요: ');
+        input = stdin.readLineSync() ?? '';
+
+        if (input.trim().isEmpty ||
+            !RegExp(r'^[a-zA-Z가-힣]+$').hasMatch(input)) {
+          print('❌ 잘못된 이름 형식입니다. 다시 입력해주세요.');
+        } else {
+          break;
+        }
       }
 
       character = Character(
@@ -38,7 +41,7 @@ class Game {
         defensePower: def,
       );
     } catch (e) {
-      print('캐릭터 불러오기 실패: $e');
+      print('❌ 캐릭터 불러오기 실패: $e');
       return;
     }
   }
