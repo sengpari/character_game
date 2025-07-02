@@ -3,19 +3,21 @@ import 'dart:math';
 import 'character.dart';
 import 'monster.dart';
 
+//게임을 진행하는 클래스
 class Game {
   late Character character;
   List<Monster> monsters = [];
 
+  //캐릭터 데이터 로드
   Future<void> loadCharacter(String filePath) async {
     try {
       final file = File(filePath);
       final lines = await file.readAsLines();
 
-      if (lines.isEmpty) throw FormatException('캐릭터 데이터가 비어 있음');
+      //if (lines.isEmpty) throw FormatException('캐릭터 데이터가 비어 있음');
 
       final stats = lines[0].split(',');
-      if (stats.length != 3) throw FormatException('캐릭터 데이터 형식 오류');
+      //if (stats.length != 3) throw FormatException('캐릭터 데이터 형식 오류');
 
       int hp = int.parse(stats[0]);
       int atk = int.parse(stats[1]);
@@ -41,6 +43,7 @@ class Game {
     }
   }
 
+  //몬스터 데이터 로드
   Future<void> loadMonsters(String filePath) async {
     try {
       final file = File(filePath);
@@ -66,10 +69,16 @@ class Game {
     }
   }
 
+  //전투 시작
   void startBattle() {
-    for (final monster in monsters) {
+    while (monsters.isNotEmpty && character.hp > 0) {
+      // 1. 랜덤으로 몬스터 선택
+      final randomIndex = Random().nextInt(monsters.length);
+      final monster = monsters[randomIndex];
+
       print('\n${monster.name}이(가) 나타났다!');
 
+      // 2. 전투 루프
       while (monster.hp > 0 && character.hp > 0) {
         character.showStatus();
         monster.showStatus();
@@ -91,19 +100,30 @@ class Game {
         }
       }
 
+      // 3. 체력 체크
       if (character.hp <= 0) {
         print('\n${character.name}이(가) 쓰러졌습니다... 게임 오버.');
         return;
       }
 
-      stdout.write('다음 몬스터와 싸우시겠습니까? (y/n): ');
-      String? next = stdin.readLineSync();
-      if (next?.toLowerCase() != 'y') break;
+      // 4. 처치한 몬스터 제거
+      if (monster.hp <= 0) {
+        print('${monster.name}을(를) 처치했습니다!');
+        monsters.remove(monster);
+      }
+
+      // 5. 다음 몬스터와 싸울지 선택
+      if (monsters.isNotEmpty) {
+        stdout.write('다음 몬스터와 싸우시겠습니까? (y/n): ');
+        String? next = stdin.readLineSync();
+        if (next?.toLowerCase() != 'y') break;
+      }
     }
 
     print('\n모든 전투가 종료되었습니다.');
   }
 
+  //결과 저장
   void saveResult() {
     stdout.write('\n결과를 저장하시겠습니까? (y/n): ');
     String? input = stdin.readLineSync();

@@ -6,8 +6,8 @@ class Character extends Unit {
   int defensePower;
 
   Character({
-    required String super.name,
-    required int super.hp,
+    required super.name,
+    required super.hp,
     required this.attackPower,
     required this.defensePower,
   });

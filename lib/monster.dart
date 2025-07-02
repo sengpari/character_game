@@ -5,11 +5,7 @@ class Monster extends Unit {
   int attackPower;
   final int defensePower = 0;
 
-  Monster({
-    required String super.name,
-    required int super.hp,
-    required this.attackPower,
-  });
+  Monster({required super.name, required super.hp, required this.attackPower});
 
   @override
   void attack(Unit target) {
