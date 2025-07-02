@@ -4,6 +4,7 @@ import 'monster.dart';
 class Character extends Unit {
   int attackPower;
   int defensePower;
+  bool usedItem = false;
 
   Character({
     required super.name,
@@ -11,6 +12,17 @@ class Character extends Unit {
     required this.attackPower,
     required this.defensePower,
   });
+
+  //아이템 사용 함수
+  void useItem() {
+    if (!usedItem) {
+      attackPower *= 2;
+      usedItem = true;
+      print('$name이(가) 아이템을 사용하여 공격력이 두 배가 되었습니다!');
+    } else {
+      print('⚠️ 이미 아이템을 사용하셨습니다.');
+    }
+  }
 
   @override
   void attack(Unit target) {

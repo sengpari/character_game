@@ -3,6 +3,8 @@ import 'dart:math';
 import 'character.dart';
 import 'monster.dart';
 
+final random = Random();
+
 //게임을 진행하는 클래스
 class Game {
   late Character character;
@@ -39,6 +41,11 @@ class Game {
         attackPower: atk,
         defensePower: def,
       );
+      //보너스 체력
+      if (Random().nextDouble() < 0.3) {
+        character.hp += 10;
+        print('보너스 체력을 얻었습니다! 현재 체력: ${character.hp}');
+      }
     } catch (e) {
       print('❌ 캐릭터 불러오기 실패: $e');
       return;
@@ -85,13 +92,17 @@ class Game {
         character.showStatus();
         monster.showStatus();
 
-        stdout.write('공격(1) / 방어(2): ');
+        monster.increaseDefenseIfNeeded();
+
+        stdout.write('공격(1) / 방어(2) / 아이템(3): ');
         String? choice = stdin.readLineSync();
 
         if (choice == '1') {
           character.attack(monster);
         } else if (choice == '2') {
           character.defend(monster.attackPower);
+        } else if (choice == '3') {
+          character.useItem();
         } else {
           print('잘못된 선택입니다.');
           continue;
