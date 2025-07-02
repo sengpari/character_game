@@ -39,7 +39,7 @@ class Game {
       );
     } catch (e) {
       print('캐릭터 불러오기 실패: $e');
-      exit(1);
+      return;
     }
   }
 
