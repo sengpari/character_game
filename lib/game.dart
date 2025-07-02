@@ -65,16 +65,16 @@ class Game {
       }
     } catch (e) {
       print('몬스터 불러오기 실패: $e');
-      exit(1);
+      return;
     }
   }
 
   //전투 시작
-  void startBattle() {
+  void battleStart() {
     while (monsters.isNotEmpty && character.hp > 0) {
       // 1. 랜덤으로 몬스터 선택
-      final randomIndex = Random().nextInt(monsters.length);
-      final monster = monsters[randomIndex];
+      final getRandomMonster = Random().nextInt(monsters.length);
+      final monster = monsters[getRandomMonster];
 
       print('\n${monster.name}이(가) 나타났다!');
 
