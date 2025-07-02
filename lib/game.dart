@@ -9,7 +9,6 @@ class Game {
   List<Monster> monsters = [];
 
   //캐릭터 데이터 로드
-  //캐릭터 데이터 로드
   Future<void> loadCharacter(String filePath) async {
     try {
       final file = File(filePath);
